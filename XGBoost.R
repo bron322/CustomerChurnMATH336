@@ -31,12 +31,11 @@ xgb_test = xgb.DMatrix(data = test_data, label=test_label)
 watchlist = list(train=xgb_train, test = xgb_test)
 
 # Trains the model
-xgb_model = xgb.train(data = xgb_train, max.depth = 3, watchlist=watchlist, 
-                      nthread=2, nrounds=1000)
+xgb_model = xgb.train(data = xgb_train, max.depth=4, watchlist=watchlist, 
+                      nthread=2, nrounds=700, objective = "binary:logistic")
 
 pred <- predict(xgb_model, test_data) # result is currently not 0-1, but decimal
 prediction <- as.numeric(pred > 0.5)
-
 
 # amount of Churns=0 and Churns=1 just to compare to predicted amount
 length(test_label[test_label==0])
@@ -54,4 +53,6 @@ paste("root-mean-squared-error=", caret::RMSE(test_label, prediction));
 # confusion matrix as a table
 table(test_label, prediction) 
 
+#will input results of table into 
+#https://www.damianoperri.it/public/confusionMatrix/?noc=2
 
